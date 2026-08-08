@@ -2,3 +2,6 @@
 *.pem
 *.key
 .env
+data/raw/
+__pycache__/
+.venv/

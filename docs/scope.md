@@ -49,8 +49,9 @@ full preemption map live in `../PRIOR-ART.md`. Summary of the boundary:
    honest User-Agent. Capture the full served chain in DER.
 3. Record per domain: chain depth as served, per-certificate DER size, signature
    algorithm, key algorithm and size, SAN count, embedded SCT count, OCSP/CRL
-   URLs, whether the root was transmitted, negotiated group (free adoption
-   statistic as a by-product), certificate_compression advertisement.
+   URLs, whether the root was transmitted. Deferred to an openssl s_client
+   subsample pass: negotiated group and certificate_compression, because
+   Python's ssl module (3.14) exposes neither; verified 2026-08-07.
 4. Dedup into distinct chain shapes with population weights. The shape table is
    a first-class output; per-domain rows are a view over it. Compare the depth
    distribution against Sikeridis 2022/1556 as the published baseline.
