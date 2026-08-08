@@ -45,7 +45,9 @@ def main() -> int:
 
     sizes = sorted(r["total_der_bytes"] for r in ok)
     depth = Counter(r["depth"] for r in ok)
-    ica = Counter(r["depth"] - 1 - (1 if r["root_transmitted"] else 0) for r in ok)
+    # Floor at 0: a served self-signed single cert is leaf and root in one,
+    # not a negative intermediate count.
+    ica = Counter(max(0, r["depth"] - 1 - (1 if r["root_transmitted"] else 0)) for r in ok)
     root_tx = sum(1 for r in ok if r["root_transmitted"])
     leaf_key = Counter(r["certs"][0].get("pubkey_alg", "?").split("-")[0] for r in ok if r["certs"])
     scts = Counter(r["certs"][0].get("sct_count", 0) for r in ok if r["certs"])

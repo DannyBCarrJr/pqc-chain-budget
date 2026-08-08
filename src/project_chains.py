@@ -36,7 +36,7 @@ from itertools import product
 from pathlib import Path
 from typing import Any
 
-# Verified locally 2026-08-08 against OpenSSL 3.5.5 (scripts/measure-mldsa-sizes.sh).
+# Verified locally 2026-08-07 against OpenSSL 3.5.5 (scripts/measure-mldsa-sizes.sh).
 # Raw sizes match FIPS 204; spki includes the DER SubjectPublicKeyInfo wrapper.
 MLDSA = {
     "ML-DSA-44": {"spki": 1334, "sig": 2420},
