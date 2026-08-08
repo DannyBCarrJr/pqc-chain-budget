@@ -1,0 +1,109 @@
+{
+ "generated": "2026-08-07",
+ "stamp": "Proposed",
+ "corpus": {
+  "tranco_list_id": "ZJGPG",
+  "tranco_created": "2026-08-07T22:00:01.772126",
+  "domains_attempted": 10000,
+  "chains_captured": 8151
+ },
+ "row_fields": [
+  "rank",
+  "classical_chain_der",
+  "depth",
+  "leaf_sct_count",
+  "root_transmitted",
+  "leaf_key_alg",
+  "scenario_flights"
+ ],
+ "scenarios": [
+  "ML-DSA-44|classical|full",
+  "ML-DSA-44|classical|leaf-only",
+  "ML-DSA-44|migrated|full",
+  "ML-DSA-44|migrated|leaf-only",
+  "ML-DSA-65|classical|full",
+  "ML-DSA-65|classical|leaf-only",
+  "ML-DSA-65|migrated|full",
+  "ML-DSA-65|migrated|leaf-only"
+ ],
+ "windows": {
+  "IW10": 14600,
+  "IW20": 29200,
+  "IW32": 46720
+ },
+ "constants": {
+  "mldsa": {
+   "ML-DSA-44": {
+    "spki": 1334,
+    "sig": 2420
+   },
+   "ML-DSA-65": {
+    "spki": 1974,
+    "sig": 3309
+   },
+   "ML-DSA-87": {
+    "spki": 2614,
+    "sig": 4627
+   }
+  },
+  "non_cv_overhead": 1256,
+  "sct_classical_sig": 71
+ },
+ "assumptions": [
+  "Projection swaps only measured signature and SPKI bytes for FIPS 204 sizes; DNs, SANs, extensions and SCT structure keep their measured size.",
+  "Chain depth and root transmission stay exactly as observed at capture time.",
+  "Each embedded SCT today carries a ~71-byte ECDSA signature.",
+  "Flight = projected chain + Certificate framing (12 + 5/cert) + CertificateVerify (signature + 4) + 1,256 bytes measured non-CV overhead (pqc-cert-matrix, one lab stack).",
+  "Real servers may run initcwnd above IW10; the window is selectable for that reason."
+ ],
+ "aggregate": {
+  "ML-DSA-44|classical|full": {
+   "p50": 16810,
+   "p95": 21499,
+   "over_iw10_pct": 85.1,
+   "over_iw20_pct": 0.1
+  },
+  "ML-DSA-44|classical|leaf-only": {
+   "p50": 8506,
+   "p95": 11176,
+   "over_iw10_pct": 0.3,
+   "over_iw20_pct": 0.0
+  },
+  "ML-DSA-44|migrated|full": {
+   "p50": 21651,
+   "p95": 28535,
+   "over_iw10_pct": 99.7,
+   "over_iw20_pct": 1.6
+  },
+  "ML-DSA-44|migrated|leaf-only": {
+   "p50": 14565,
+   "p95": 18272,
+   "over_iw10_pct": 48.7,
+   "over_iw20_pct": 0.0
+  },
+  "ML-DSA-65|classical|full": {
+   "p50": 22282,
+   "p95": 28495,
+   "over_iw10_pct": 99.5,
+   "over_iw20_pct": 1.5
+  },
+  "ML-DSA-65|classical|leaf-only": {
+   "p50": 10035,
+   "p95": 12705,
+   "over_iw10_pct": 0.9,
+   "over_iw20_pct": 0.0
+  },
+  "ML-DSA-65|migrated|full": {
+   "p50": 28805,
+   "p95": 38201,
+   "over_iw10_pct": 99.8,
+   "over_iw20_pct": 48.1
+  },
+  "ML-DSA-65|migrated|leaf-only": {
+   "p50": 18717,
+   "p95": 22456,
+   "over_iw10_pct": 99.7,
+   "over_iw20_pct": 0.1
+  }
+ }
+}
