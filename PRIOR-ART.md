@@ -178,14 +178,19 @@ All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
   the combination ("14600" with "ML-DSA", "initial congestion window" with
   "ML-DSA") returned only this project's sibling repos.
 
-## Watch items, unresolved
+## Watch items
 
-- **IACR ePrint 2026/866, Delgado, "Observability for Post-Quantum TLS Readiness:
-  A Multi-Surface Evidence Framework", a 1000-target public campaign. NOT READ:
-  eprint.iacr.org serves a 403 interstitial to every fetcher tried; only the
-  abstract page was read. Same author as arXiv:2604.06100. This paper MUST be
-  read in full before anything from this project is published.** It is the
-  single unresolved threat to the novelty claim.
+- **IACR ePrint 2026/866: READ IN FULL 2026-08-07, does not preempt.** Danny
+  retrieved the PDF past the 403 (`.sources/papers/2026-866.pdf`); converted
+  and grepped. Zero occurrences of: congestion, initcwnd, flight,
+  amplification, Tranco, "chain size", "certificate size", per-site,
+  per-domain, and the word "bytes" appears zero times in the paper. Its
+  "projection" is policy projection (readiness verdicts), its "budget" is
+  probe-execution budget, and its 1000-target campaign measures hybrid KEX
+  capability (310 targets confirmed) and collects 1,368 chain artifacts
+  without any size analysis. Cite it as methodology kin (evidence surfaces,
+  explicit unknown/contradiction handling, "endpoint capability exceeds what
+  any single classical session view reveals"); it competes with nothing here.
 - **Red Sift** published the exact analytical framing
   (redsift.com/blog/post-quantum-signature-sizes: "ML-DSA certificate chains blow
   past the 14.5 KB TCP congestion window"), employs Ivan Ristić, and already
