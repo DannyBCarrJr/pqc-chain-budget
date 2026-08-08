@@ -15,4 +15,3 @@
   not preempt; see PRIOR-ART.md). Re-sweep prior art before any NEW public claim.
 - Prose follows `~/.rocky/steering/writing-style.md`. No em dashes, no banned
   vocabulary, sentence-case headings.
-- No AI co-author trailers in commits.
