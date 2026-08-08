@@ -11,7 +11,8 @@
   fabricated or misattributed summaries to date.
 - `.sources/` stays gitignored. No third-party full texts ever ship in this
   repo, public or private.
-- Read IACR ePrint 2026/866 in full before anything from this repo is published.
+- The ePrint 2026/866 publication gate is CLOSED (read in full 2026-08-07, does
+  not preempt; see PRIOR-ART.md). Re-sweep prior art before any NEW public claim.
 - Prose follows `~/.rocky/steering/writing-style.md`. No em dashes, no banned
   vocabulary, sentence-case headings.
 - No AI co-author trailers in commits.

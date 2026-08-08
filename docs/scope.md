@@ -1,8 +1,12 @@
 # pqc-chain-budget, project scope
 
-Status: draft, 2026-08-07. Pre-measurement. Nothing here is public until the
-claim-check pass runs and ePrint 2026/866 has been read in full (see
-`../PRIOR-ART.md`, watch items).
+Status: SHIPPED 2026-08-08. All four phases complete, dataset public with DOI
+10.5281/zenodo.21846142, tool and article live (links in README). This document
+is kept as the original scope; deviations are recorded in the dated files under
+`data/` and in `../PRIOR-ART.md`. Deferred, not dropped: composite parameter
+column, top-100k corpus, arbitrary-domain live checker, chain-shape weighted
+reporting (the PRIOR-ART traveling sentence promises weights; current outputs
+are per-domain unweighted; reconcile before any academic-venue version).
 
 ## One line
 
