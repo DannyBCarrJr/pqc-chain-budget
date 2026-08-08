@@ -1,0 +1,4 @@
+.sources/
+*.pem
+*.key
+.env
