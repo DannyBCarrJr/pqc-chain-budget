@@ -1,8 +1,6 @@
 # pqc-chain-budget
 
-Measured certificate chains of real websites, projected to their post-quantum
-equivalents, evaluated against the TLS server's first-flight budget. Every
-number regenerable by script; the captured evidence ships in this repo.
+Measured certificate chains of real websites, projected to their post-quantum equivalents, evaluated against the TLS server's first-flight budget. Every number regenerable by script; the captured evidence ships in this repo.
 
 Written up: [The typical chain moved](https://carrdigital.dev/writing/the-typical-chain-moved/).
 Interactive per-domain lookup: [chain check](https://carrdigital.dev/tools/chain-check/).
