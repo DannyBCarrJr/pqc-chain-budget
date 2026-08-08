@@ -16,6 +16,7 @@ from typing import Any
 from cryptography import x509
 from cryptography.x509.oid import ExtensionOID, NameOID, AuthorityInformationAccessOID
 from cryptography.hazmat.primitives.asymmetric import ec, ed448, ed25519, rsa
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
 
 def ext_value(cert: x509.Certificate, oid: x509.ObjectIdentifier) -> Any | None:
@@ -57,8 +58,12 @@ def cert_facts(der: bytes) -> dict[str, Any]:
         if aia is not None
         else 0
     )
+    spki_der = cert.public_key().public_bytes(Encoding.DER, PublicFormat.SubjectPublicKeyInfo)
     return {
         "der_len": len(der),
+        # Measured byte sizes of the two fields the PQ projection swaps out.
+        "sig_len": len(cert.signature),
+        "spki_len": len(spki_der),
         "sig_alg": getattr(sig_oid, "_name", None) or sig_oid.dotted_string,
         "sig_alg_oid": sig_oid.dotted_string,
         "pubkey_alg": public_key_facts(cert)[0],
