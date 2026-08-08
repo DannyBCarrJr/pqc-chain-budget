@@ -238,3 +238,41 @@ consistent with this project family's history (three prior demotions in
 
 Rule, unchanged: every load-bearing citation is verified by downloading the full
 text and grepping it. Never a summary.
+
+## Pre-publication re-sweep, 2026-08-07 (same night as the article)
+
+arXiv API returned 200 on every query this time, closing the earlier 429 gap: 37
+cs.CR post-quantum submissions since 2026-06-10 reviewed. The join claim stays
+clear. Three corrections were forced into the article before it shipped:
+
+- **"The models conclude ML-DSA-44 fits" was refutable.** Kampanakis and
+  Kallitsis's own text (local copy, `.sources/priorart/`): "When SCTs and/or
+  OCSP staples are present Dilithium starts from ~15KB." And Ristic (Red Sift,
+  2026-08-03, redsift.com/blog/post-quantum-signature-sizes) concludes on a
+  modeled chain that "the public cryptography alone busts the 14 KB initial
+  congestion window", and closes by announcing a measured follow-up post. The
+  honest framing: models disagree by chain flavor; the corpus supplies the
+  fraction and the spread.
+- **The Sikeridis depth comparison needs its counting rule.** Our 3-ICA bucket
+  matches their June 2022 row within a point while 0-ICA sits 24 points apart
+  (0.6% vs 24.1%); some of the table is definitional, and Sikeridis never
+  state their rule. Stated in the article.
+- **The HRR observation is a conformance check, not a finding.** RFC 8446
+  section 4.1.4 specifies it; Cloudflare documented the dual-key-share
+  mitigation in 2023 (blog.cloudflare.com/post-quantum-to-origins/);
+  draft-ietf-tls-key-share-prediction exists to avoid it via DNS. No published
+  measurement of a PQ-only-key-share client against classical servers was
+  found, so the 284/285 number itself is ours.
+
+New sources recorded: Yao et al., "Chaos in the Chain", ACM IMC 2025 (DOI
+10.1145/3730567.3732921), Tranco 1M chain completeness, zero PQ/size content;
+its 89.9% root-omitted and 1.3% no-intermediate cross-check this corpus's 86.9%
+and 0.6%. Loizou and Ghadafi (arXiv:2608.02147, UK sectors, adoption only): not
+preempting. Kim et al. (arXiv:2607.20800) and Lee et al. (ePrint 2026/1416):
+verifier semantics, not preempting; 1416's abstract independently states the
+wolfSSL cannot-require finding, cite it wherever the catalyst line appears.
+
+**Still unopened:** Henrich, Schmitt, Alnahawi, Heinemann, ISC 2025 (LNCS
+16186, DOI 10.1007/978-3-032-08124-7_6), paywalled, varies lab chain
+compositions; article wording was chosen so nothing depends on it. ePrint
+2026/1416 PDF still 403s; abstract only.

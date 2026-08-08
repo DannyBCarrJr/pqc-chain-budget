@@ -15,8 +15,8 @@ defaults. Evidence: data/group-subsample.jsonl.
   PQ-first single-key-share client, essentially every classical TLS 1.3
   server costs one extra round trip. Client-policy-dependent; browsers
   sending dual shares avoid this.
-- CompressedCertificate engaged at 3 servers: first live engagement ever
-  observed from this client build (pqc-cert-matrix logged zero in lab).
+- CompressedCertificate engaged at 3 servers: the only live engagement we
+  have observed from this client build (pqc-cert-matrix logged zero in lab).
 
 Instrument note: run 1 (-msg) undercounted by bucketing HRR sessions as
 unknown (the 'Negotiated TLS1.3 group' line never prints after HRR);
