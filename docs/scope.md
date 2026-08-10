@@ -1,7 +1,17 @@
 # pqc-chain-budget, project scope
 
 Status: SHIPPED 2026-08-08. All four phases complete, dataset public with DOI
-10.5281/zenodo.21846142, tool and article live (links in README). This document is kept as the original scope; deviations are recorded in the dated files under `data/` and in `../PRIOR-ART.md`. Deferred, not dropped: composite parameter column, top-100k corpus, arbitrary-domain live checker, chain-shape weighted reporting (the PRIOR-ART traveling sentence promises weights; current outputs are per-domain unweighted; reconcile before any academic-venue version).
+10.5281/zenodo.21846142, tool and article live (links in README).
+
+**Addendum shipped 2026-08-09, outside the original four phases:** certificate
+compression. `src/compress_chains.py` measures RFC 8879 compression over the same
+captured corpus, decomposes the saving, and carries it onto each site's projected
+chain; run recorded in `data/2026-08-09_compression.md`, written up as
+carrdigital.dev/writing/the-same-985-bytes/. Median 985 bytes recovered today and
+roughly the same 985 bytes after migration, so 28.6% becomes a projected 7.4% under
+ML-DSA-44. Read `../PRIOR-ART.md` before repeating any of it: the corpus measurement
+is preempted by cert-abridge and the qualitative conclusion by two IETF drafts, so
+the permitted claim is narrow and written out verbatim there. This document is kept as the original scope; deviations are recorded in the dated files under `data/` and in `../PRIOR-ART.md`. Deferred, not dropped: composite parameter column, top-100k corpus, arbitrary-domain live checker, chain-shape weighted reporting (the PRIOR-ART traveling sentence promises weights; current outputs are per-domain unweighted; reconcile before any academic-venue version).
 
 ## One line
 
