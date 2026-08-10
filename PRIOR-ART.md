@@ -231,6 +231,42 @@ All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
   projection, zero byte-level hits. His depth-3 finding (the root leaves the
   transmitted set, an 11,015-byte swing) is a required scenario axis in our
   projection model.
+- **Astrizi and Custódio, "Seamless Transition to Post-Quantum TLS 1.3: A Hybrid
+  Approach Using Identity-Based Encryption", *Sensors* 24(22):7300, 2024-11-15,
+  DOI 10.3390/s24227300, PMID 39599077. Added 2026-08-10. Stamp: Reported,
+  downloaded and grepped locally (`.sources/papers/`), not read via summary.**
+  A KEMTLS variant using identity-based encryption so that existing classical
+  certificates can be reused, with a proof-of-concept and a handshake size and
+  latency comparison.
+
+  **Does not preempt.** Verbatim from section 4: "The same certificate chain,
+  sized at 2050 bytes, was used for all protocols except KEMTLS-IBE-PDK". One
+  constructed chain, same class as Kampanakis and as Chou and Cao, which is
+  precisely the line our corpus claim draws. Grepped for tranco, crawl, corpus,
+  and any "N domains" pattern: the sole "Alexa" hit is a person's name in the
+  acknowledgments. There is no deployed-chain corpus in the paper.
+
+  **Cite it anyway** in any discussion of reducing chain weight, because reusing
+  classical certificates is a different lever on the same budget than compression
+  or leaf-only substitution.
+
+- **METHODOLOGY GAP, found 2026-08-10 and applies to every claim in this file.**
+  The paper above is squarely on topic, was published 2024-11-15, and the sweep
+  of 2026-08-07 missed it. The reason is venue: that sweep covered arXiv, IACR
+  ePrint, the IETF Datatracker, ETSI, BSI, and the ACM, IEEE, and USENIX
+  proceedings. It did not cover **MDPI journals or PubMed Central**. MDPI's
+  *Sensors*, *Entropy*, *Applied Sciences*, *Electronics*, *Mathematics*, and
+  *Cryptography* publish post-quantum work steadily, *Scientific Reports* does
+  too, and PMC indexes them. None of that surfaces in a search scoped to the
+  venues above.
+
+  **Consequence:** every "we found no published X, searching [list] on [date]"
+  sentence in this repo and in `pqc-cert-matrix` currently rests on a search that
+  omitted a whole publishing ecosystem. Add PMC and MDPI to the search list, name
+  them in the scope sentence, and re-run before the next publication. A reviewer
+  who finds an MDPI paper we missed damages the claim more than the paper itself
+  ever would.
+
 - **Tool landscape (opened 2026-08-07):** PostQ (postq.dev, free, reports current
   chain algorithms per domain, the deepest free checker found), DigiCert PQC
   checker, Wiz PQC tester, QuReady, KF-Cipher, Pinaka, PQCClear (login-walled
@@ -240,6 +276,51 @@ All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
   projects migration sizes against a transport budget. GitHub code searches for
   the combination ("14600" with "ML-DSA", "initial congestion window" with
   "ML-DSA") returned only this project's sibling repos.
+- **Tenable, added 2026-08-10. Stamp: Reported.** Enterprise vulnerability
+  management now ships post-quantum inventory, which puts this question inside
+  the tool large organizations already run rather than in a free per-domain
+  checker. Three Nessus plugins, all published **2025-12-08**, so this predates
+  our work and is market context rather than a response to it.
+
+  **Method:** the three plugin pages were downloaded with curl and the text
+  extracted and grepped locally, not read through a summarizer. Raw HTML in
+  `.sources/tenable/`. The originating announcement on connect.tenable.com is
+  session-gated and **was not read**.
+
+  | Plugin | Name | NASL | Version | Published / Updated |
+  |---|---|---|---|---|
+  | 277652 | Target Cipher Inventory | `target_cipher_inventory.nasl` | 1.5 | 2025-12-08 / 2026-04-13 |
+  | 277653 | Remote Services Using Post-Quantum Ciphers | `services_using_post_quantum_crypto.nasl` | 1.1 | 2025-12-08 |
+  | 277650 | Remote Services Not Using Post-Quantum Ciphers | | | 2025-12-08 |
+
+  **Tenable declines the security conclusion in both directions, in its own
+  words.** 277653: "This plugin reports network services that offer post-quantum
+  ciphers and enumerates the post-quantum ciphers that they offer. Tenable makes
+  no attempt to determine whether the remote service is actually hardened against
+  a post-quantum attack." 277650: "Tenable makes no attempt to determine whether
+  the remote service would be vulnerable to a post-quantum attack."
+
+  **Tenable is being accurate and the disclaimer is good practice. Do not write
+  this up as a vendor defect.** The gap is between what the plugin states and
+  what a dashboard row labelled "Services Using Post-Quantum Ciphers" invites a
+  reader to conclude, and the disclaimer lives in a plugin description almost no
+  dashboard consumer opens. Same shape as the cert-matrix false-pass finding, at
+  fleet scale, stated by the vendor rather than by us.
+
+  **It does not touch the tool claim above.** That claim is scoped to free
+  per-domain checkers, and this is neither free nor per-domain. Tenable projects
+  no migration sizes and checks nothing against a transport budget.
+
+  **Still UNVERIFIED, and worth settling before this appears in an article:**
+  whether the 277652 JSON inventory covers certificate signature algorithms or
+  only cipher suites and key exchange groups. Two pieces of support, neither
+  conclusive. 277652 says "ciphers and algorithms" without distinguishing. And
+  277650's own worked examples are "RSA asymmetric encryption and Diffie-Hellman
+  key exchange", both confidentiality primitives, with no signature algorithm
+  named anywhere in the three descriptions. TLS 1.3 cipher suites are AEAD-only,
+  so "post-quantum cipher" most likely means the negotiated group. **That remains
+  an inference from how TLS 1.3 works plus Tenable's choice of examples, not a
+  statement in Tenable's text.** One look at the JSON attachment settles it.
 
 ## Watch items
 
