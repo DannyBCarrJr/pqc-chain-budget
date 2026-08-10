@@ -50,6 +50,56 @@ rebuttal:
 > window. What this adds is per-domain application and a flight-level budget
 > rather than a chain-level one, which is roughly one signature stricter.
 
+## The claim the compression work may make, verbatim
+
+Added 2026-08-09. This one is narrow, and it is narrow because the sweep cut it
+down twice. Read the whole section before writing a word about compression.
+
+> Certificate compression on real chains is measured work, not ours: Jackson's
+> abridged-certs draft evaluated ~75,000 Tranco chains and published percentiles
+> for ZStandard at maximum parameters. The conclusion that it does not rescue
+> post-quantum certificates is also not ours; it is stated in that draft and in
+> draft-ietf-uta-pqc-app-03, both quoted below. What this work adds is the
+> decomposition of the saving into its within-certificate and cross-certificate
+> parts, the observation that brotli beats zstd on 87.4% of these chains, and
+> the join to this repo's per-site projection: the same measured saving carried
+> onto each site's own migrated chain.
+
+**PREEMPTED, and this is the sentence that gets the repo in trouble if it is
+softened.** `draft-ietf-tls-cert-abridge-02` Table 1 reports p5/p50/p95 of 2308 /
+4032 / 5609 uncompressed and 1619 / 3243 / 3821 compressed over ~75,000 Tranco
+chains. The caption states the row "used ZStandard with the parameters configured
+for maximum compression". Verified by downloading the draft and reading Table 1
+with its caption, 2026-08-09. **Measuring certificate compression over a large
+corpus of real WebPKI chains is published work. Never present it as new.** Our
+corpus is 8,152 chains, roughly a ninth the size.
+
+**PREEMPTED, qualitative post-quantum conclusion, twice.** Verified verbatim
+2026-08-09 by downloading both drafts:
+
+- `draft-ietf-tls-cert-abridge-02`, lines 141-146: post-quantum signatures and
+  keys "will be typically 10 to 40 times their current size and cannot be
+  compressed with existing TLS Certificate Compression schemes because most of
+  the size of the certificate is in high entropy fields such as cryptographic
+  keys and signatures."
+- `draft-ietf-uta-pqc-app-03`, lines 864-870: "While effective in many scenarios,
+  its impact on PQ or PQ/T hybrid certificates is limited due to the larger sizes
+  of public keys and signatures in PQC. These high-entropy fields, inherent to
+  PQC algorithms, constrain the overall compression effectiveness."
+
+**Open, as far as we could find after searching.** Neither draft, and no source
+found, publishes the post-migration compression percentage on real chains.
+cert-abridge cites Westerbaan's "Sizing Up Post-Quantum Signatures" for
+post-quantum sizing; that post does not discuss certificate compression at all
+(checked 2026-08-09). arXiv:2604.06100 contains one instance of the word
+"compress" and it is metaphorical. arXiv:2606.16473 contains none.
+
+**Demoted before publication.** The 4-byte expansion of ML-DSA fields under
+every RFC 8879 algorithm is measured and reproducible, and it is also the
+expected behavior of a compressor given incompressible input. It ships as an
+illustration of the drafts' claim. It is not a finding and must not be written
+as one.
+
 ## PREEMPTED, cite instead of claim
 
 **The methodology, classical half: Nawrocki, Tehrani, Hiesgen, Mücke, Schmidt,
@@ -235,6 +285,13 @@ consistent with this project family's history (three prior demotions in
    recorded here because the same source is cited).
 2. A summary attributed ePrint 2022/1556 to "Kampanakis and Kallitsis"; the
    actual authors are Sikeridis, Huntley, Ott and Devetsikiotis.
+3. 2026-08-09, compression sweep. A search summary asserted that post-quantum
+   certificate overhead "is largely mitigated through TLS 1.3 certificate
+   compression and caching mechanisms," and offered arXiv:2604.06100 among its
+   sources. That paper contains one instance of the word "compress" and it is
+   metaphorical ("compresses the operational meaning"). The assertion also
+   contradicts both IETF drafts on the subject. It traces to no source that
+   could be opened.
 
 Rule, unchanged: every load-bearing citation is verified by downloading the full
 text and grepping it. Never a summary.

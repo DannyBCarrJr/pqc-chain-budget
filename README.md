@@ -21,6 +21,14 @@ top 10,000 domains completed a handshake, 8,151 parseable.
   corpus adds.
 - **Leaf-only migration fits almost everywhere**: 0.3% (ML-DSA-44) and 0.9%
   (ML-DSA-65) of sites exceed IW10.
+- **Certificate compression recovers a median 985 bytes (28.6%) on these chains
+  today, and roughly the same 985 bytes after migration**, which is 7.4% of an
+  ML-DSA-44 chain and 5.5% of an ML-DSA-65 one. The saving is structural, and
+  migration adds no structure. That compression does not rescue post-quantum
+  certificates is stated in two IETF drafts and is cited, never claimed here;
+  measuring compression across a large corpus of real chains is also published
+  work (cert-abridge, ~75,000 chains). See `PRIOR-ART.md` before repeating any
+  of this.
 - If CT log signatures migrate to ML-DSA-65 with the chains, **48.1% of sites
   project past even IW20**.
 - The corpus is 2-intermediate dominant (66.1% under the counting rule stated
@@ -46,6 +54,8 @@ and names what to cite. Read it before quoting anything here as new.
 - `src/project_chains.py`: the projection model and its assumptions.
 - `src/variance_test.py`: the constant-delta comparison (Phase 4).
 - `src/probe_groups.py`: negotiated-group and HRR subsample via s_client.
+- `src/compress_chains.py`: RFC 8879 compression on the captured chains, its
+  decomposition, and the same saving carried onto the migrated chain.
 - `src/export_web.py`: static data for the chain check tool.
 - `scripts/fetch-corpus.sh`: pins and downloads the Tranco corpus.
 - `scripts/measure-mldsa-sizes.sh`: regenerates the ML-DSA size constants.
