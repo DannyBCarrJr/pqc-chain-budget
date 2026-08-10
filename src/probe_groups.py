@@ -9,9 +9,19 @@ sampled domain.
 
 The negotiated group is client-relative: it reports what the server picks when
 offered this client's defaults, comparable to the published adoption scans.
-CompressedCertificate detection is best-effort via -msg; pqc-cert-matrix
-recorded an open question about this build's compression negotiation, so a
-uniform zero here is a client-side finding, not a server-side one.
+
+CompressedCertificate detection reads the -trace output for the handshake
+message name. Verified 2026-08-10 against six live hosts: the pattern matches
+only the received `CompressedCertificate` message and never the client's own
+`compress_certificate(27)` offer, which every ClientHello carries (the extension
+name has no "ed", so `compressed.?` cannot reach its "certificate"). The three
+hits this finds are real zstd messages and they reproduce.
+
+Compression detection is also client-relative, and more narrowly than the group
+is: this build advertises `zlib (1)` and `zstd (3)` only, so a brotli-only server
+reads as a non-engagement. pqc-cert-matrix once recorded a uniform lab zero as a
+client-side finding; that reading was wrong and was retracted 2026-08-10. The
+client negotiates compression fine when the server offers it.
 """
 from __future__ import annotations
 
@@ -28,6 +38,13 @@ from typing import Any
 GROUP_RE = re.compile(r"Negotiated TLS1\.3 group: (\S+)")
 PROTO_RE = re.compile(r"^Protocol\s*: (\S+)", re.M)
 NAMED_RE = re.compile(r"NamedGroup: (.+?) \(\d+\)")
+# Anchored to the start of a trace line so this can only ever match the
+# handshake message name, never prose or an extension name elsewhere in the
+# output. Format verified against live traces 2026-08-10:
+#     CompressedCertificate, Length=2227
+#       Compression type=zstd (0x0003)
+COMPCERT_RE = re.compile(r"^\s*CompressedCertificate\b", re.M)
+COMPALG_RE = re.compile(r"^\s*Compression type=(\S+)", re.M)
 
 
 def probe(rec: dict[str, Any], timeout: float) -> dict[str, Any]:
@@ -64,7 +81,10 @@ def probe(rec: dict[str, Any], timeout: float) -> dict[str, Any]:
             # HRR fingerprint: a received key_share carrying only the 2-byte
             # selected_group ("HelloRetryRequest" never appears literally).
             hello_retry="extension_type=key_share(51), length=2" in text,
-            compressed_cert=bool(re.search(r"compressed.?certificate", text, re.I)),
+            compressed_cert=bool(COMPCERT_RE.search(text)),
+            # Ships the algorithm alongside the boolean so the claim carries its
+            # own evidence instead of resting on a re-probe.
+            compression_alg=(m.group(1) if (m := COMPALG_RE.search(text)) else None),
         )
     except subprocess.TimeoutExpired:
         out.update(ok=False, group=None, protocol=None, compressed_cert=False, error="timeout")
@@ -101,7 +121,12 @@ def main() -> int:
     print("negotiated group:", {k: f"{v} ({v/len(live)*100:.1f}%)" for k, v in groups.most_common(8)})
     print(f"hybrid PQ key exchange: {hybrid}/{len(live)} ({hybrid/len(live)*100:.1f}%)")
     print("protocol:", dict(protos.most_common()))
-    print(f"CompressedCertificate seen: {compressed}")
+    # RFC 8879 is TLS 1.3 only, so a TLS 1.2 session could never have compressed.
+    # Report against the denominator that could actually have engaged.
+    tls13 = sum(1 for r in live if r.get("protocol") == "TLSv1.3")
+    algs = Counter(r["compression_alg"] for r in live if r.get("compression_alg"))
+    print(f"CompressedCertificate seen: {compressed}/{tls13} TLS1.3 sessions "
+          f"({compressed/tls13*100:.2f}%) {dict(algs) or ''}")
     hrr = sum(1 for r in live if r.get("hello_retry"))
     print(f"HelloRetryRequest (server refused the offered key share): {hrr} ({hrr/len(live)*100:.1f}%)")
     return 0

@@ -100,6 +100,19 @@ expected behavior of a compressor given incompressible input. It ships as an
 illustration of the drafts' claim. It is not a finding and must not be written
 as one.
 
+**Not a deployment survey, and must never be dressed as one (added 2026-08-10).**
+The subsample records that 3 of 842 TLS 1.3 servers negotiated a live
+CompressedCertificate. Verified, and correct for what it is: a byproduct of a
+1,019-host probe run for negotiated groups. It is not a measurement of how much
+of the web deploys RFC 8879. The sample is one eighth of the corpus by rank
+stride, all three hits are Meta properties, and four more Meta hosts that also
+compress fell outside the sample, so the figure is known to undercount by an
+unmeasured amount. It is also client-relative: this build offers zlib and zstd
+only. Before any prevalence claim is written from this number, search the prior
+art properly, because live compression deployment is a well-trodden measurement
+area and nothing here was designed to survey it. Evidence and method:
+`data/2026-08-10_compression-verification.md`.
+
 ## PREEMPTED, cite instead of claim
 
 **The methodology, classical half: Nawrocki, Tehrani, Hiesgen, Mücke, Schmidt,

@@ -15,8 +15,14 @@ defaults. Evidence: data/group-subsample.jsonl.
   PQ-first single-key-share client, essentially every classical TLS 1.3
   server costs one extra round trip. Client-policy-dependent; browsers
   sending dual shares avoid this.
-- CompressedCertificate engaged at 3 servers: the only live engagement we
-  have observed from this client build (pqc-cert-matrix logged zero in lab).
+- CompressedCertificate engaged at 3 servers, all zstd: 3 of the 842 TLS 1.3
+  sessions (0.36%), which is the denominator that matters because RFC 8879 is
+  TLS 1.3 only and the other 177 sessions could never have compressed. Verified
+  2026-08-10, see `2026-08-10_compression-verification.md`. **Do not read 3 as a
+  web-wide count.** All three are Meta properties, and stride-8 sampling skipped
+  four more Meta hosts that also compress, so the subsample understates the real
+  rate. Client-relative in one direction too: this build offers zlib and zstd
+  only, so a brotli-only server reads as a non-engagement.
 
 Instrument note: run 1 (-msg) undercounted by bucketing HRR sessions as
 unknown (the 'Negotiated TLS1.3 group' line never prints after HRR);
