@@ -409,9 +409,60 @@ All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
   publication opportunity and a possible venue. It is also a reason not to sit on
   the corpus indefinitely.
 
-  **Unread, and next in line:** `slides-125-plants-mtc-experiment-early-results`
-  (IETF 125, 2026-03-14) is the other measurement-shaped item in this group and
-  has not been read. Do not characterize it either way until it has been.
+- **MTC is not an experiment on paper. It is deployed, measured, and faster. Read
+  in full 2026-08-12, and this is the strongest challenge to this project's
+  framing in the file.**
+
+  `slides-125-plants-mtc-experiment-early-results-01.pdf`, IETF 125, 2026-03-14,
+  Luke Valenta (Cloudflare). Downloaded from ietf.org/proceedings and read, not
+  summarized. 8 pages.
+
+  What is actually running:
+
+  - Cloudflare serves MTC on **1000 Cloudflare-proxied domains** via a "bootstrap"
+    MTC CA, 7 day certificate validity, landmarks issued every hour.
+  - Chrome is the client on **50% of Chrome Beta 146+**, with an update service
+    distributing landmarks and about **10KB** of client state.
+  - **Largest proof size 512 bytes, and "Web scale will be 700-800".**
+  - Measured latency, classical signatures throughout: **P50 about 9% faster
+    (105ms vs 116ms), P90 about 8% faster (348ms vs 380ms)**, with the note
+    "Expect an even wider performance gap with PQ!"
+  - Landmark freshness: most clients update within 23 hours, steady state 0.5 to
+    1.5% stale, stated as an upper bound "due to experimental quirks".
+  - "Middlebox interference thus far is a non-factor (TLS 1.3 encrypts server
+    cert)."
+
+  **It does not preempt anything measured here, and the reason is one line on slide
+  3: the experiment "Restricts experiment to classical signatures".** Nobody in
+  this experiment has measured MTC carrying post-quantum signatures. The 700-800
+  byte projected proof size is also a projection, not a measurement.
+
+  **But it is the rebuttal this project has to answer, so here is the answer,
+  ready.** A reviewer can say: Cloudflare and Chrome already ship the alternative
+  to drop-in ML-DSA, measured 9% faster, with a web-scale proof of 700-800 bytes
+  against the multi-kilobyte chains this corpus measures, so who cares about the
+  drop-in projection? Three responses, all defensible and all sourced from this
+  same slide deck:
+
+  1. **Every MTC in the experiment "is backed by a traditional cert chain."** The
+     classical chain is still issued and still exists during any transition, so the
+     population this corpus measures does not disappear when MTC arrives.
+  2. **The scale gap is four orders of magnitude.** 1000 proxied domains against
+     the Tranco top 10k as sampled here, and against the Web PKI as a whole. MTC
+     also requires a new CA, a client update service, and landmark distribution,
+     which is infrastructure most of the Web PKI does not have.
+  3. **The post-quantum case is unmeasured by anyone, including Cloudflare.** Their
+     own deck projects it with an exclamation mark. That is precisely the kind of
+     gap this project exists to fill, and it argues for publishing sooner.
+
+  Concretely: keep the drop-in scoping, state plainly that MTC is a live
+  alternative with measured classical wins, and cite this deck when doing so.
+  Presenting drop-in as the only path on the table is no longer defensible after
+  2026-03-14, and pretending otherwise is the fastest way to lose a reviewer.
+
+  The middlebox line is worth carrying into `pqc-cert-matrix` too, since TLS 1.3
+  encrypting the server certificate is why middleboxes do not interfere, and that
+  bears on what any on-path inventory tool can see at all.
 
 - **Google Cloud's PQC roadmap corroborates the problem and publishes no numbers.
   Added 2026-08-12.** It commits to full PQC readiness by 2029, SNDL mitigation by
