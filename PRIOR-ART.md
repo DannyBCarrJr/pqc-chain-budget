@@ -324,6 +324,59 @@ All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
 
 ## Watch items
 
+- **The Merkle Tree Certificates draft is now a chartered IETF Working Group, and
+  this is a status change rather than a new source. Added 2026-08-12.** The
+  PREEMPTED section above assesses `draft-davidben-tls-merkle-tree-certs` as a
+  model with no corpus, which still holds. What changed is that the work has an
+  owner and a date.
+
+  **IETF PLANTS WG**, "PKI, Logs, And Tree Signatures", active, group record on
+  the datatracker timestamped 2026-04-02. Chairs Russ Housley and Thom Wiggers,
+  Area Director Deb Cooley (Security). Charter goal, verbatim from the datatracker
+  group API rather than a summary of it:
+
+  > The goal of the PLANTS Working Group is to trim the costs of large
+  > post-quantum signatures on PKIs with Certificate Transparency (CT; RFC 6962
+  > and RFC 9162), when used in interactive protocols like TLS (RFC 8446).
+
+  The mechanism is "techniques where one signature can cover multiple
+  key/identifier bindings, e.g. by signing Merkle Tree hashes." Milestones:
+  an informational architecture document due **2026-07-31** (taxonomy,
+  information flows, use cases), and a standards document due **2026-11-30**.
+  It will not go to the IESG "before demonstrating two interoperable
+  implementations", and it may define ACME and TLS extensions in liaison with
+  those working groups.
+
+  **Why it matters to this project's framing, which is the actual point.** Every
+  projection here is scoped to *drop-in* ML-DSA, and that scoping is what keeps it
+  honest. It is also what makes PLANTS relevant: MTC is the industry's alternative
+  to drop-in, and it now has a chartered WG with a November 2026 target rather than
+  being one individual's draft. The 85.1% figure remains true as a measured
+  counterfactual, and the writeup should not imply drop-in is the only path
+  anyone is considering. Google Cloud's roadmap puts Google Trust Services MTC at
+  2028 and says it is "collaborating with the IETF PLANTS Working Group", so a
+  reviewer will know this exists.
+
+  **It does not preempt the corpus.** The charter is a design programme, and
+  neither it nor the architecture milestone measures a population of real chains.
+  Re-check both milestone documents before publication: an architecture document
+  that happens to include a measured chain corpus would change this assessment,
+  and the July milestone has already passed.
+
+- **Google Cloud's PQC roadmap corroborates the problem and publishes no numbers.
+  Added 2026-08-12.** It commits to full PQC readiness by 2029, SNDL mitigation by
+  end of 2027, integrity and non-repudiation plus foundations by end of 2028, and
+  names ML-KEM, ML-DSA, SLH-DSA with X25519MLKEM768 for hybrid TLS. On this
+  project's subject it says it will "Address large PQC signature sizes that can
+  impact the performance of certificate chain validations through novel approaches
+  like Merkle Tree Certificates for Web PKI", and notes that "Chrome and Cloudflare
+  have started experimenting with Merkle Tree Certificates".
+
+  A hyperscaler naming the exact cost with no distribution behind it is the
+  cleanest possible setup for this corpus, so cite it as motivation, never as
+  evidence. Verified 2026-08-12: the roadmap contains no measured sizes,
+  latencies, or benchmark figures at all.
+
 - **IACR ePrint 2026/866: READ IN FULL 2026-08-07, does not preempt.** Danny
   retrieved the PDF past the 403 (`.sources/papers/2026-866.pdf`); converted
   and grepped. Zero occurrences of: congestion, initcwnd, flight,
