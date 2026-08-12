@@ -359,9 +359,59 @@ All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
 
   **It does not preempt the corpus.** The charter is a design programme, and
   neither it nor the architecture milestone measures a population of real chains.
-  Re-check both milestone documents before publication: an architecture document
-  that happens to include a measured chain corpus would change this assessment,
-  and the July milestone has already passed.
+
+  **Milestone status checked 2026-08-12, so this no longer needs re-checking
+  blind.** Queried through the datatracker `groupmilestone` API rather than read
+  off a page:
+
+  - The **architecture document has not shipped.** Its milestone is `state:
+    active`, `resolved` is empty, and `docs` is an empty list. Due 2026-07-31, so
+    it is 12 days overdue as of this entry. Nothing to assess yet.
+  - The **standards work is ahead of it.** `draft-ietf-plants-merkle-tree-certs`
+    is WG-adopted and at **revision 05** (2026-07-06); the individual
+    `draft-davidben-tls-merkle-tree-certs` sits at revision 10. The
+    already-assessed size figures in the PREEMPTED section come from the
+    individual draft, so re-read the WG draft at its current revision before
+    publication; the numbers may have moved.
+
+  Re-check the architecture milestone once more before Phase 6. A taxonomy and
+  use-cases document that arrives carrying a measured chain corpus would change
+  this assessment, and it is the one document here that plausibly could.
+
+- **PLANTS wants the measurement this project produces, and one talk in the WG is
+  measurement-shaped but far too small to preempt. Read 2026-08-12.**
+
+  `slides-126-plants-measuring-deployment-characteristics-of-pq-tls-authentication-mechanisms-00.pdf`,
+  IETF 126, 2026-07-19, "Post Quantum Cryptography (KEM and Authentication): Some
+  Real World Data", presented by Nalini Elkins (Outside the Stacks, Inc. /
+  Industry Network Technology Council). Downloaded from ietf.org/proceedings and
+  read, not summarized. 21 pages, 598 words of extracted text.
+
+  Mostly an enterprise requirements talk: whether an MTC relying party can still
+  read Subject DN, SAN, EKU, and policy extensions; what enterprises must archive
+  for audit; how private PKIs should deploy MTC. Its one table of sizes is the
+  SLH-DSA parameter set from FIPS 205, which is a reference table rather than a
+  measurement.
+
+  Its one measured slide is **"Internet Sites (top 27)"**, reporting observed
+  algorithm sets as RSA 14 (51.9%), EC 9 (33.3%), and EC + RSA 4 (14.8%). No
+  methodology is given, n is 27, and it measures which algorithm sets appear
+  rather than any byte count. Against 8,151 measured Tranco chains this competes
+  with nothing, and the keyword sweep confirms it: zero occurrences of
+  `signature_algorithms`, chain size, chain selection, Tranco, congestion,
+  initcwnd, or ML-DSA.
+
+  **The useful signal is the ask, not the data.** The closing slides propose
+  public test points ("We ... want to put up some more public test points"), raise
+  a "Split World at Enterprises?" question about browsers doing MTC while
+  enterprise servers serve plain certificates, and ask "What about CDN, proxies,
+  etc?" A working group asking for exactly this class of measurement is a
+  publication opportunity and a possible venue. It is also a reason not to sit on
+  the corpus indefinitely.
+
+  **Unread, and next in line:** `slides-125-plants-mtc-experiment-early-results`
+  (IETF 125, 2026-03-14) is the other measurement-shaped item in this group and
+  has not been read. Do not characterize it either way until it has been.
 
 - **Google Cloud's PQC roadmap corroborates the problem and publishes no numbers.
   Added 2026-08-12.** It commits to full PQC readiness by 2029, SNDL mitigation by
