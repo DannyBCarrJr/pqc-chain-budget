@@ -406,7 +406,7 @@ All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
 
   **IETF PLANTS WG**, "PKI, Logs, And Tree Signatures", active, group record on
   the datatracker timestamped 2026-04-02. Chairs Russ Housley and Thom Wiggers,
-  Area Director Deb Cooley (Security). Charter goal, verbatim from the datatracker
+  Area Director Deb Cooley (Security). The charter goal, verbatim from the datatracker
   group API rather than a summary of it:
 
   > The goal of the PLANTS Working Group is to trim the costs of large

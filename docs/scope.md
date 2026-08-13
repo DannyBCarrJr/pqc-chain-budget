@@ -73,5 +73,5 @@ Build the constant-delta model from published inputs only (Sikeridis depth distr
 - Read IACR ePrint 2026/866 in full before publication. Non-negotiable; it is the one unread near neighbor.
 - Re-run the prior-art sweep immediately before publication (the 08-07 sweep was rate-limited on arXiv metadata; Red Sift is one sprint from shipping the same framing).
 - Scanning etiquette: single connection per domain, no vulnerability probing, standard measurement-research practice. This is chain capture, the same act a browser performs.
-- Prose follows `~/.rocky/steering/writing-style.md`. No em dashes, no banned vocabulary, sentence-case headings.
+- Prose: no em dashes, no banned vocabulary, sentence-case headings.
 - Boundary: open tooling, no vendor accounts, no employer material, consistent with the 2026-08-01 strategy call (the evidence layer stays free).
