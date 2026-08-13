@@ -1,0 +1,76 @@
+cff-version: 1.2.0
+title: "Post-quantum certificate chain budget: per-site projection against the initial congestion window"
+message: >-
+  If you use this corpus or cite its figures, please cite it as below. Read
+  PRIOR-ART.md first. It records, per claim, what published work already covers,
+  and several figures here are refinements of prior results rather than new ones.
+  Every post-quantum figure is stamped Proposed, permanently: the input chains are
+  measured, the migrated sizes are projected under stated assumptions.
+type: software
+authors:
+  - given-names: "Danny B."
+    family-names: Carr
+    name-suffix: Jr.
+    affiliation: "Carr Digital LLC"
+repository-code: "https://github.com/DannyBCarrJr/pqc-chain-budget"
+url: "https://carrdigital.dev/writing/the-typical-chain-moved/"
+doi: 10.5281/zenodo.21846142
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21846142
+    description: >-
+      Concept DOI. Always resolves to the latest version; cite this one unless you
+      need to pin a specific release.
+  - type: doi
+    value: 10.5281/zenodo.21846143
+    description: Version DOI for v1.0.0.
+abstract: >-
+  Post-quantum signature sizes projected onto each site's own deployed certificate
+  chain, rather than onto a single constructed typical chain. Input chains are
+  Verified: captured 2026-08-07 from the Tranco list ZJGPG, where 8,152 of the top
+  10,000 domains completed a TLS handshake and 8,151 were fully parseable. One chain
+  is dropped from the projection because a certificate's signature or subject public
+  key did not parse, on the principle that projecting part of a chain is worse than
+  dropping it.
+
+  Under a drop-in ML-DSA-44 migration, with the full chain migrated and SCTs left
+  classical, 85.1% of measured sites project past the IW10 initial congestion window,
+  which costs an extra round trip on a full handshake. A leaf-only migration fits
+  almost everywhere: 0.3% exceed IW10 for ML-DSA-44 and 0.9% for ML-DSA-65. The
+  direction was already predicted by typical-chain models; what this corpus adds is
+  the fraction, the spread, and the per-site verdicts.
+
+  Certificate compression recovers a median 985 bytes, 28.6%, on these chains today
+  and roughly the same 985 bytes after migration, which is 7.4% of an ML-DSA-44 chain
+  and 5.5% of an ML-DSA-65 one. The saving is structural and migration adds no
+  structure. That compression does not rescue post-quantum certificates is stated in
+  two IETF drafts and is cited here rather than claimed, and measuring compression
+  across a large corpus of real chains is likewise published work.
+
+  Method note: the classical half of this approach is Nawrocki et al. (CoNEXT 2022),
+  who evaluated real deployed chains per site against a first-flight transport budget.
+  This work is their method with a post-quantum signature substitution.
+keywords:
+  - post-quantum cryptography
+  - TLS
+  - X.509
+  - public key infrastructure
+  - ML-DSA
+  - certificate chain size
+  - congestion window
+  - certificate compression
+  - measurement
+license: MIT
+version: 1.0.0
+date-released: "2026-08-09"
+
+# Added 2026-08-12, after the v1.0.0 release rather than before it, which had a
+# visible cost worth recording: with no citation file present at archive time, Zenodo
+# fell back to the GitHub-generated string "DannyBCarrJr/pqc-chain-budget: v1.0.0" as
+# the record title. That is poor for search and for Google Scholar. Zenodo metadata is
+# editable after publication, so the existing record's title should be corrected there
+# by hand; this file fixes it for every future release.
+#
+# Both DOIs were read from DataCite, not inferred: the concept DOI reports HasVersion
+# -> ...21846143 and the version DOI reports IsVersionOf -> ...21846142, so the pair is
+# confirmed from both directions.
