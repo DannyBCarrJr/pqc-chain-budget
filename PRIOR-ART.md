@@ -198,13 +198,67 @@ All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
 - David Adrian, "Post-quantum cryptography is too damn big.", 2024-03-22:
   "5*2420 + 2*1312 = 14,724 bytes of signatures and public keys", a synthetic
   typical chain.
-- draft-davidben-tls-merkle-tree-certs, section 1.1: "two SCTs and a leaf
-  certificate signature adds 7,260 bytes ... with ML-DSA-44 and 9,927 bytes with
-  ML-DSA-65." Model, no corpus.
+- **Merkle Tree Certificates. Citation corrected and re-verified 2026-08-12
+  against both draft texts, fetched from ietf.org and grepped.** Primary citation
+  is now the working group document, `draft-ietf-plants-merkle-tree-certs-05`,
+  **Section 1, Introduction**, which the PLANTS WG adopted; the individual
+  `draft-davidben-tls-merkle-tree-certs-10` carries the identical sentence.
+  Verbatim:
+
+  > Even with a directly-trusted intermediate (Section 7.5 of
+  > [I-D.ietf-tls-trust-anchor-ids]), two SCTs and a leaf certificate signature
+  > adds 7,260 bytes of authentication overhead with ML-DSA-44 and 9,927 bytes
+  > with ML-DSA-65.
+
+  Three corrections to what this entry said before, each of which would have been
+  a reviewer's free hit:
+
+  1. **The section number was wrong.** It read "section 1.1". Neither draft has
+     any `1.x` subsection at all, in either revision. The text is in Section 1.
+  2. **It cited the superseded document.** The individual draft is no longer the
+     standards-track vehicle; the WG draft is. Both are listed now, WG first.
+  3. **It dropped the load-bearing precondition.** "Even with a directly-trusted
+     intermediate" means the 7,260 figure is what remains *after* the
+     intermediate's own signature has been eliminated by trusting it directly. It
+     is a floor under a favourable assumption, not a typical-case chain. Quoting
+     it without that clause overstates how small the draft claims the overhead
+     gets, and understates our own contrast.
+
+  The same paragraph states ML-DSA-44 at 1,312 bytes per public key and 2,420 per
+  signature, and ML-DSA-65 at 1,952 and 3,309, which matches FIPS 204.
+
+  Still model, not corpus, which is why it does not preempt this project.
 - Let's Encrypt, "A Post-Quantum Future for Let's Encrypt", 2026-06-03: typical
   handshake "well past 10 kilobytes" under ML-DSA. Model.
-- Kampanakis and Lepoint, SSR 2023 (ePrint 2023/266): post-quantum amplification
-  factors "5 to 20 in typical settings". Typical settings, no corpus.
+- **Kampanakis and Lepoint, ePrint 2023/266. Re-verified 2026-08-12 against the
+  full PDF, fetched and grepped. The quote is accurate and it was labelled as the
+  wrong quantity.** Title is "Vision Paper: Do we need to change some things?
+  Open questions posed by the upcoming post-quantum migration to existing
+  standards and deployments", Amazon Web Services.
+
+  The paper does say "the post-quantum migration could easily make the BAF
+  ranging from 5 to 20 in typical settings", verbatim. **But BAF is the QUIC
+  bandwidth amplification factor, response bytes over request bytes, in a
+  discussion of reflection and denial-of-service protection.** It is not a
+  certificate chain size multiple, and listing it under chain arithmetic invited
+  a reviewer to read it as one. Different quantity, adjacent subject.
+
+  **The paper's actual size claim is the one that belongs here, and it was
+  missing:**
+
+  > In a post-quantum world, when using the general purpose Dilithium signature
+  > scheme, the ServerHello, Certificate and CertificateVerify messages could add
+  > up to 15-17kB for the lowest security level.
+
+  Dilithium at the lowest security level is ML-DSA-44. That 15 to 17kB lands on
+  top of Cloudflare's "17kB extra to swap in ML-DSA-44" above, which is useful
+  corroboration between two independent sources and worth citing as such.
+
+  Also correct the method description. This is not purely a model: Figure 4 shows
+  an experiment comparing RSA-2048 against post-quantum chains under QUIC's
+  amplification window. What it does not have is a corpus of real-world chains,
+  which is the distinction that matters here, so say "no chain corpus" rather than
+  "no corpus".
 - Chou and Cao, arXiv:2604.24869: synthetic size sweep 4KB to 80KB via padded
   extensions ("artificially simulating their sizes by padding with certificate
   extensions"); real-world data is Zeek resumption-rate metadata, not
