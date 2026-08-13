@@ -189,12 +189,22 @@ site's own chain; that derivation is our contribution, and only that.
 
 All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
 
-- Westerbaan, "Sizing Up Post-Quantum Signatures", Cloudflare, 2021-11-08. Six
-  signatures, two public keys; synthetic 1kB dummy certificates for the transport
-  experiment; conclusion "easiest if six signatures and two public keys would fit
-  in 9kB".
-- Cloudflare, "The state of the post-quantum Internet", 2024-03-05: "It will take
-  17kB extra to swap in ML-DSA-44."
+> **Every quote in this list was re-verified on 2026-08-12 by fetching the source
+> and grepping the rendered text, not by recalling it and not through a
+> summarizer.** Two entries needed correcting and are marked below. The three
+> immediately following are confirmed verbatim, with the exact sentence recorded so
+> a future check does not have to re-fetch.
+
+- **Westerbaan, "Sizing Up Post-Quantum Signatures", Cloudflare, 2021-11-08.
+  Verified verbatim 2026-08-12.** Six signatures, two public keys; synthetic 1kB
+  dummy certificates for the transport experiment. Exact sentence: "Our evidence so
+  far suggests that this will be easiest, if six signatures and two public keys
+  would fit in 9kB." The post also enumerates the six: "two in the certificate
+  chain; one handshake signature; one OCSP staple and finally two SCTs".
+  https://blog.cloudflare.com/sizing-up-post-quantum-signatures/
+- **Cloudflare, "The state of the post-quantum Internet", 2024-03-05. Verified
+  verbatim 2026-08-12:** "It will take 17kB extra to swap in ML-DSA-44."
+  https://blog.cloudflare.com/pq-2024/
 - David Adrian, "Post-quantum cryptography is too damn big.", 2024-03-22:
   "5*2420 + 2*1312 = 14,724 bytes of signatures and public keys", a synthetic
   typical chain.
@@ -228,8 +238,18 @@ All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
   signature, and ML-DSA-65 at 1,952 and 3,309, which matches FIPS 204.
 
   Still model, not corpus, which is why it does not preempt this project.
-- Let's Encrypt, "A Post-Quantum Future for Let's Encrypt", 2026-06-03: typical
-  handshake "well past 10 kilobytes" under ML-DSA. Model.
+- **Let's Encrypt, "A Post-Quantum Future for Let's Encrypt", 2026-06-03. Verified
+  verbatim 2026-08-12**, at https://letsencrypt.org/2026/06/03/pq-certs (note the
+  URL: no `.html`, and it is `pq-certs`, not a slug built from the title). Exact
+  sentence, with its antecedent, because the antecedent is the part that matters:
+  a chain "carries five signatures and two public keys. Replacing those with ML-DSA
+  equivalents would push a single TLS handshake well past 10 kilobytes." Model, and
+  note it is **five** signatures where Westerbaan counts six, because the two posts
+  are counting different chain shapes. Do not average them.
+
+  The same post attributes the consequence to Cloudflare rather than measuring it:
+  "Cloudflare's research has shown that, at that scale, a meaningful share of TLS
+  connections fail on real-world networks."
 - **Kampanakis and Lepoint, ePrint 2023/266. Re-verified 2026-08-12 against the
   full PDF, fetched and grepped. The quote is accurate and it was labelled as the
   wrong quantity.** Title is "Vision Paper: Do we need to change some things?
@@ -513,6 +533,30 @@ All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
   alternative with measured classical wins, and cite this deck when doing so.
   Presenting drop-in as the only path on the table is no longer defensible after
   2026-03-14, and pretending otherwise is the fastest way to lose a reviewer.
+
+  **Let's Encrypt has committed to MTC, and that is the strongest version of this
+  problem. Found 2026-08-12 while verifying an unrelated quote in the same post.**
+  From https://letsencrypt.org/2026/06/03/pq-certs, verified by fetching and
+  grepping: they name "Merkle Tree Certificates as the path forward for the
+  post-quantum Web PKI" and are "targeting late 2026 for a staging environment that
+  issues MTCs, and 2027 for a production-ready environment."
+
+  Put the three together and the picture is not a Cloudflare experiment. It is
+  Cloudflare serving MTC to 1000 domains with Chrome as client, Google Trust
+  Services scheduling MTC for 2028, and **the largest CA on the Web by certificate
+  count scheduling production MTC for 2027**, all under an IETF working group
+  chartered for it with a standards document due 2026-11-30.
+
+  **This does not touch the measurement, and it does change what the measurement is
+  about.** Every number in this project is scoped to drop-in ML-DSA, and those
+  numbers stay true. What weakens is any implication that drop-in is where the Web
+  PKI is heading. The honest framing, and it is still a strong one: this is what
+  drop-in would cost, measured on 8,151 real chains, and the cost is a large part
+  of why the ecosystem is building something else. A projection that explains an
+  industry decision is more useful than one that predicts an industry action.
+
+  Write the article that way, or a reviewer who reads the Let's Encrypt post will
+  write it for you.
 
   The middlebox line is worth carrying into `pqc-cert-matrix` too, since TLS 1.3
   encrypting the server certificate is why middleboxes do not interfere, and that
