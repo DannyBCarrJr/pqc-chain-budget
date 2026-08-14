@@ -491,6 +491,16 @@ All of these publish PQ size arithmetic on a modeled chain, none on a corpus:
   Luke Valenta (Cloudflare). Downloaded from ietf.org/proceedings and read, not
   summarized. 8 pages.
 
+  **Citable URL, added 2026-08-13 and re-verified by downloading the PDF again**
+  (403KB, sha256 `cdb6ba0c8bb9…`): https://www.ietf.org/proceedings/125/slides/slides-125-plants-mtc-experiment-early-results-01.pdf
+  The datatracker mirrors serve the identical bytes at
+  `datatracker.ietf.org/meeting/125/materials/slides-125-plants-mtc-experiment-early-results-01`.
+  Re-grepped on that fetch: the 1000 proxied domains, the 50% of Chrome Beta 146+,
+  the "~10KB" client state, the 512-byte largest proof with "Web scale will be
+  700-800", "P50: ~9% faster (105ms vs 116ms)", "P90: ~8% faster (348ms vs
+  380ms)", and the load-bearing "Restricts experiment to classical signatures" all
+  appear verbatim. Nothing in this entry needed correcting.
+
   What is actually running:
 
   - Cloudflare serves MTC on **1000 Cloudflare-proxied domains** via a "bootstrap"
