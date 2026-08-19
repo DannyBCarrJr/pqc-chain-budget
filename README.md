@@ -58,6 +58,10 @@ and names what to cite. Read it before quoting anything here as new.
 - `src/compress_chains.py`: RFC 8879 compression on the captured chains, its
   decomposition, and the same saving carried onto the migrated chain.
 - `src/export_web.py`: static data for the chain check tool.
+- `service/`: the live half of the chain check tool. One handshake for any
+  public domain not in the corpus, through the same capture, parse, and
+  projection code imported from `src/`, returned in the corpus row shape.
+  Guardrails and run instructions in `service/README.md`.
 - `scripts/fetch-corpus.sh`: pins and downloads the Tranco corpus.
 - `scripts/measure-mldsa-sizes.sh`: regenerates the ML-DSA size constants.
 - `data/capture-top10k.jsonl.gz`: the raw captured evidence (chains as served,

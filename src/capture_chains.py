@@ -30,7 +30,7 @@ def utcnow() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-def handshake(hostname: str, timeout: float) -> dict[str, object]:
+def handshake(hostname: str, timeout: float, connect_addr: str | None = None) -> dict[str, object]:
     ctx = ssl.create_default_context()
     # Verification is disabled ON PURPOSE. This is a measurement instrument,
     # not a client: the point is to record the chain exactly as served,
@@ -40,7 +40,11 @@ def handshake(hostname: str, timeout: float) -> dict[str, object]:
     # validity is an analysis question, answered offline in parse_chains.py.
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
-    with socket.create_connection((hostname, 443), timeout=timeout) as sock:
+    # connect_addr lets a caller connect to an address it has already resolved
+    # and vetted (the live checker pins the vetted IP so a second lookup cannot
+    # be rebound to a private address); SNI still carries the hostname either
+    # way. Corpus capture passes nothing and behaves exactly as before.
+    with socket.create_connection((connect_addr or hostname, 443), timeout=timeout) as sock:
         with ctx.wrap_socket(sock, server_hostname=hostname) as tls:
             chain = tls.get_unverified_chain() or []
             cipher = tls.cipher()
