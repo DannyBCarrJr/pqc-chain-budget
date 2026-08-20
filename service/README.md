@@ -46,3 +46,8 @@ not a security boundary; the hard ceilings are the semaphore and the cache.
 Config is environment variables, all optional: `ALLOW_ORIGINS` (CORS, default
 `https://carrdigital.dev`), plus the knobs named above and the cache TTLs in
 `app.py`.
+
+The tool page does not call this hostname directly: content blockers kill
+cross-origin fetches to it, so carrdigital.dev relays same-origin via a Pages
+Function at `/api/chain-check/*`, forwarding the visitor's IP in
+`x-chain-check-client`. The direct hostname stays public for API users.
