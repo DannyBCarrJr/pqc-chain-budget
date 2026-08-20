@@ -86,6 +86,10 @@ if "--live" in sys.argv:
     assert payload is not None, "live capture did not build a payload"
     row = payload["row"]
     assert row[0] is None and len(row) == 7 and len(row[6]) == 8, f"row shape wrong: {row}"
+    assert len(payload["certs"]) == row[2] == len(payload["certs_der_b64"]), (
+        "evidence must carry one parsed-fact entry and one DER per certificate"
+    )
+    assert all(c["der_len"] and c["sig_len"] and c["spki_len"] for c in payload["certs"])
     # The flights must equal an independent recomputation through the
     # published projection, in meta.json scenario order.
     rec = summarize(raw)

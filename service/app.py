@@ -44,7 +44,9 @@ ALLOW_ORIGINS = os.environ.get("ALLOW_ORIGINS", "https://carrdigital.dev").split
 BUDGET_PER_HOUR = int(os.environ.get("BUDGET_PER_HOUR", "20"))
 CACHE_OK_TTL = int(os.environ.get("CACHE_OK_TTL", str(24 * 3600)))
 CACHE_ERR_TTL = int(os.environ.get("CACHE_ERR_TTL", "600"))
-CACHE_MAX = int(os.environ.get("CACHE_MAX", "50000"))
+# Entries now carry the served DER (~15KB each); 2,000 of them is ~30MB,
+# which respects a 512MB instance. Raise only with the instance.
+CACHE_MAX = int(os.environ.get("CACHE_MAX", "2000"))
 HANDSHAKE_TIMEOUT = float(os.environ.get("HANDSHAKE_TIMEOUT", "8.0"))
 MAX_CONCURRENT = int(os.environ.get("MAX_CONCURRENT", "4"))
 
@@ -126,9 +128,28 @@ def measure(domain: str) -> dict:
     return {**base, "ok": False, "error": last_err, "error_code": code}
 
 
+# Per-certificate facts the page needs to show the projection's arithmetic
+# line by line, and that ship in the downloadable evidence bundle.
+CERT_FIELDS = (
+    "subject_cn",
+    "issuer_cn",
+    "sig_alg",
+    "pubkey_alg",
+    "pubkey_bits",
+    "der_len",
+    "sig_len",
+    "spki_len",
+    "sct_count",
+    "is_ca",
+    "self_signed",
+)
+
+
 def build_payload(raw: dict) -> dict | None:
     """Parse and project a live capture into the corpus shard row shape
-    (export_web.py row_fields), so the page renders both identically."""
+    (export_web.py row_fields), so the page renders both identically. The
+    payload also carries the parsed per-cert facts and the chain exactly as
+    served (base64 DER), so every live verdict hands over its evidence."""
     rec = summarize(raw)
     if not rec.get("ok") or not rec.get("certs"):
         return None
@@ -144,6 +165,8 @@ def build_payload(raw: dict) -> dict | None:
         "hostname": rec["hostname"],
         "ts": rec["ts"],
         "tls_version": rec.get("tls_version"),
+        "certs": [{k: c.get(k) for k in CERT_FIELDS} for c in rec["certs"]],
+        "certs_der_b64": list(raw.get("certs_der_b64", [])),
         "row": [
             None,
             rec["total_der_bytes"],
