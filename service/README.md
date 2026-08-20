@@ -26,7 +26,9 @@ from the repo root: `docker build -f service/Dockerfile .`
 - `GET /check?domain=<hostname>` returns `{domain, hostname, ts, tls_version,
   row}` where `row` matches `export_web.py`'s `row_fields` with `rank` null.
   Errors: 400 not a hostname, 403 resolves only to non-public addresses,
-  404 does not resolve, 429 over budget, 502 handshake or parse failure.
+  404 does not resolve, 429 over budget, 424 handshake or parse failure
+  (424 rather than 502 because Cloudflare replaces an origin 502 with its
+  own error page, which swallows the JSON detail).
 - `GET /healthz` reports the interpreter and OpenSSL versions doing the measuring.
 
 ## Guardrails

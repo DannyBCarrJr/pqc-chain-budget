@@ -110,17 +110,19 @@ def measure(domain: str) -> dict:
             last_err, code = f"{hostname} resolves only to non-public addresses", "private"
             continue
         for addr in addrs[:2]:
-            err = None
-            for _ in (1, 2):
-                try:
-                    data = handshake(hostname, HANDSHAKE_TIMEOUT, connect_addr=addr)
-                    return {**base, "ok": True, "hostname": hostname, "error": None, **data}
-                except TRANSIENT as e:
-                    err = f"{type(e).__name__}: {e}"
-                except (ssl.SSLError, OSError) as e:
-                    err = f"{type(e).__name__}: {e}"
-                    break
-            last_err, code = err or "unknown", "handshake"
+            # Unlike corpus capture there is no transient retry here: this is
+            # an interactive path, a person is watching a spinner, and a host
+            # that just ate a full timeout is not going to answer the rerun.
+            # The user's retry button is the retry.
+            try:
+                data = handshake(hostname, HANDSHAKE_TIMEOUT, connect_addr=addr)
+                return {**base, "ok": True, "hostname": hostname, "error": None, **data}
+            except TimeoutError:
+                err = f"port 443 did not answer within {HANDSHAKE_TIMEOUT:.0f}s"
+            except (*TRANSIENT, ssl.SSLError, OSError) as e:
+                err = f"{type(e).__name__}: {e}"
+            last_err = f"{hostname} did not complete a TLS handshake ({err})"
+            code = "handshake"
     return {**base, "ok": False, "error": last_err, "error_code": code}
 
 
@@ -235,15 +237,19 @@ async def check(request: Request, domain: str = "") -> JSONResponse:
         if raw["ok"]:
             payload = build_payload(raw)
             if payload is None:
+                # 424, never 502/504: Cloudflare replaces origin 502/504 with
+                # its own bare error page, which swallows the JSON detail the
+                # page needs to explain the failure (found the hard way on day
+                # one, chartercom.com).
                 payload, status = (
                     {"error": "parse", "detail": f"{d} served a chain this tool could not parse"},
-                    502,
+                    424,
                 )
             else:
                 status = 200
         else:
             code = str(raw.get("error_code", "handshake"))
-            status = {"dns": 404, "private": 403}.get(code, 502)
+            status = {"dns": 404, "private": 403}.get(code, 424)
             payload = {"error": code, "detail": str(raw["error"]), "domain": d}
         cache_put(d, payload, status)
         return JSONResponse(payload, status_code=status)
