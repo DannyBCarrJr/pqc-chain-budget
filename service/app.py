@@ -173,7 +173,14 @@ def client_ip(request: Request) -> str:
     # security boundary; a spoofed header only reshuffles budgets. The hard
     # ceilings are the global semaphore and the cache. Upgrade path: rate
     # limit at the edge (Cloudflare) in front of this and trust only its header.
-    fwd = request.headers.get("cf-connecting-ip") or request.headers.get("x-forwarded-for", "")
+    # x-chain-check-client comes first: the same-origin Pages Function relay
+    # sets it to the real visitor IP, because on its subrequest
+    # cf-connecting-ip is the relay, and every visitor would share one bucket.
+    fwd = (
+        request.headers.get("x-chain-check-client")
+        or request.headers.get("cf-connecting-ip")
+        or request.headers.get("x-forwarded-for", "")
+    )
     first = fwd.split(",")[0].strip()
     return first or (request.client.host if request.client else "?")
 
