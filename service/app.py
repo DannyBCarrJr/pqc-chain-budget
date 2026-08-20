@@ -128,7 +128,10 @@ def measure(domain: str) -> dict:
             except TimeoutError:
                 err = f"port 443 did not answer within {HANDSHAKE_TIMEOUT:.0f}s"
             except (*TRANSIENT, ssl.SSLError, OSError) as e:
-                err = f"{type(e).__name__}: {e}"
+                # Class name only: raw OSError/SSLError text can carry resolved
+                # addresses and library internals (2026-08-19 security review),
+                # and the class alone already tells the user what happened.
+                err = type(e).__name__
             last_err = f"{hostname} did not complete a TLS handshake ({err})"
             code = "handshake"
     return {**base, "ok": False, "error": last_err, "error_code": code}
