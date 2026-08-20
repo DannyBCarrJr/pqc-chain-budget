@@ -4,7 +4,9 @@ Measured certificate chains of real websites, projected to their post-quantum eq
 
 Written up: [The typical chain moved](https://carrdigital.dev/writing/the-typical-chain-moved/)
 and [The same 985 bytes](https://carrdigital.dev/writing/the-same-985-bytes/) (certificate compression).
-Interactive per-domain lookup: [chain check](https://carrdigital.dev/tools/chain-check/).
+Interactive per-domain lookup: [chain check](https://carrdigital.dev/tools/chain-check/),
+which answers from this corpus for top-10k domains and measures anything else live
+through `service/`, handing over the served chain as downloadable evidence.
 Cite the concept DOI [10.5281/zenodo.21846142](https://doi.org/10.5281/zenodo.21846142)
 (resolves to the latest version; v1.0.0 is pinned by 10.5281/zenodo.21846143).
 

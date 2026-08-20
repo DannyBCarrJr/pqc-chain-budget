@@ -689,3 +689,28 @@ wolfSSL cannot-require finding, cite it wherever the catalyst line appears.
 16186, DOI 10.1007/978-3-032-08124-7_6), paywalled, varies lab chain
 compositions; article wording was chosen so nothing depends on it. ePrint
 2026/1416 PDF still 403s; abstract only.
+
+## The SLH-DSA-128s SCT scenario, added 2026-08-19
+
+A third CT-log option joined the scenario grid: each embedded SCT signature
+swapped for a raw SLH-DSA-SHA2-128s signature (7,856 bytes, measured with the
+same OpenSSL 3.5.5 script as the ML-DSA constants). What this project claims
+is the corpus arithmetic only: under that swap, leaf-only migration projects
+past IW10 for 99.7% of the 8,151 measured sites and past IW20 for 51.6%.
+Proposed, like every projection here.
+
+Framing rules for anything public that uses it:
+
+- **It is a scenario, never an attributed proposal.** No source in this file
+  says any log operator intends SLH-DSA SCTs. The motivation wording stays
+  hypothetical ("the conservative hash-based choice for long-lived log keys"),
+  and no sentence may imply logs are moving that way.
+- **The qualitative point is established territory, cite it.** The PLANTS WG
+  charter exists to "trim the costs of large post-quantum signatures on PKIs
+  with Certificate Transparency", so "PQ SCTs are heavy" is theirs to say and
+  ours to cite. The per-site corpus projection under a specific SLH-DSA
+  parameter set is the only part claimed here.
+- **No fresh sweep was run for this scenario on 2026-08-19.** The README
+  bullet and the tool page claim only our arithmetic, which needs no sweep.
+  Before any article leads with this finding, run the standard re-sweep for
+  SLH-DSA-specific SCT projections; this entry is the reminder.
