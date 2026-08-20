@@ -21,10 +21,14 @@
   "ML-DSA-44|classical|leaf-only",
   "ML-DSA-44|migrated|full",
   "ML-DSA-44|migrated|leaf-only",
+  "ML-DSA-44|slh-dsa-128s|full",
+  "ML-DSA-44|slh-dsa-128s|leaf-only",
   "ML-DSA-65|classical|full",
   "ML-DSA-65|classical|leaf-only",
   "ML-DSA-65|migrated|full",
-  "ML-DSA-65|migrated|leaf-only"
+  "ML-DSA-65|migrated|leaf-only",
+  "ML-DSA-65|slh-dsa-128s|full",
+  "ML-DSA-65|slh-dsa-128s|leaf-only"
  ],
  "windows": {
   "IW10": 14600,
@@ -47,12 +51,14 @@
    }
   },
   "non_cv_overhead": 1256,
-  "sct_classical_sig": 71
+  "sct_classical_sig": 71,
+  "slh_dsa_128s_sig": 7856
  },
  "assumptions": [
   "Projection swaps only measured signature and SPKI bytes for FIPS 204 sizes; DNs, SANs, extensions and SCT structure keep their measured size.",
   "Chain depth and root transmission stay exactly as observed at capture time.",
   "Each embedded SCT today carries a ~71-byte ECDSA signature.",
+  "The SLH-DSA-128s SCT scenario swaps each of those for a 7,856-byte hash-based signature (measured, OpenSSL 3.5.5); chain and handshake signatures stay on the selected ML-DSA parameter.",
   "Flight = projected chain + Certificate framing (12 + 5/cert) + CertificateVerify (signature + 4) + 1,256 bytes measured non-CV overhead (pqc-cert-matrix, one lab stack).",
   "Real servers may run initcwnd above IW10; the window is selectable for that reason."
  ],
@@ -81,6 +87,18 @@
    "over_iw10_pct": 48.7,
    "over_iw20_pct": 0.0
   },
+  "ML-DSA-44|slh-dsa-128s|full": {
+   "p50": 36427,
+   "p95": 44844,
+   "over_iw10_pct": 99.8,
+   "over_iw20_pct": 98.8
+  },
+  "ML-DSA-44|slh-dsa-128s|leaf-only": {
+   "p50": 30621,
+   "p95": 34571,
+   "over_iw10_pct": 99.7,
+   "over_iw20_pct": 51.6
+  },
   "ML-DSA-65|classical|full": {
    "p50": 22282,
    "p95": 28495,
@@ -104,6 +122,18 @@
    "p95": 22456,
    "over_iw10_pct": 99.7,
    "over_iw20_pct": 0.1
+  },
+  "ML-DSA-65|slh-dsa-128s|full": {
+   "p50": 40658,
+   "p95": 51848,
+   "over_iw10_pct": 99.8,
+   "over_iw20_pct": 99.7
+  },
+  "ML-DSA-65|slh-dsa-128s|leaf-only": {
+   "p50": 32150,
+   "p95": 36100,
+   "over_iw10_pct": 99.7,
+   "over_iw20_pct": 51.7
   }
  }
 }

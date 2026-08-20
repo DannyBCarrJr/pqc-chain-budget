@@ -24,7 +24,10 @@ from the repo root: `docker build -f service/Dockerfile .`
 ## API
 
 - `GET /check?domain=<hostname>` returns `{domain, hostname, ts, tls_version,
-  row}` where `row` matches `export_web.py`'s `row_fields` with `rank` null.
+  row, certs, certs_der_b64, scenarios}`: `row` matches `export_web.py`'s
+  `row_fields` with `rank` null, `certs` holds the parsed per-certificate
+  facts, `certs_der_b64` the chain exactly as served, and `scenarios` names
+  the order of the flights array so a consumer never has to assume it.
   Errors: 400 not a hostname, 403 resolves only to non-public addresses,
   404 does not resolve, 429 over budget, 424 handshake or parse failure
   (424 rather than 502 because Cloudflare replaces an origin 502 with its

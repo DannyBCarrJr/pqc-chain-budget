@@ -18,9 +18,17 @@ from collections import defaultdict
 from itertools import product
 from pathlib import Path
 
-from project_chains import MLDSA, NON_CV_OVERHEAD, SCT_CLASSICAL_SIG, WINDOWS, project_domain
+from project_chains import (
+    MLDSA,
+    NON_CV_OVERHEAD,
+    SCT_CLASSICAL_SIG,
+    SCT_MODES,
+    SLH_DSA_128S_SIG,
+    WINDOWS,
+    project_domain,
+)
 
-SCENARIOS = list(product(("ML-DSA-44", "ML-DSA-65"), ("classical", "migrated"), ("full", "leaf-only")))
+SCENARIOS = list(product(("ML-DSA-44", "ML-DSA-65"), SCT_MODES, ("full", "leaf-only")))
 
 
 def shard_key(domain: str) -> str:
@@ -92,11 +100,17 @@ def main() -> int:
         "row_fields": ["rank", "classical_chain_der", "depth", "leaf_sct_count", "root_transmitted", "leaf_key_alg", "scenario_flights"],
         "scenarios": [f"{p}|{s}|{m}" for p, s, m in SCENARIOS],
         "windows": WINDOWS,
-        "constants": {"mldsa": MLDSA, "non_cv_overhead": NON_CV_OVERHEAD, "sct_classical_sig": SCT_CLASSICAL_SIG},
+        "constants": {
+            "mldsa": MLDSA,
+            "non_cv_overhead": NON_CV_OVERHEAD,
+            "sct_classical_sig": SCT_CLASSICAL_SIG,
+            "slh_dsa_128s_sig": SLH_DSA_128S_SIG,
+        },
         "assumptions": [
             "Projection swaps only measured signature and SPKI bytes for FIPS 204 sizes; DNs, SANs, extensions and SCT structure keep their measured size.",
             "Chain depth and root transmission stay exactly as observed at capture time.",
             "Each embedded SCT today carries a ~71-byte ECDSA signature.",
+            "The SLH-DSA-128s SCT scenario swaps each of those for a 7,856-byte hash-based signature (measured, OpenSSL 3.5.5); chain and handshake signatures stay on the selected ML-DSA parameter.",
             "Flight = projected chain + Certificate framing (12 + 5/cert) + CertificateVerify (signature + 4) + 1,256 bytes measured non-CV overhead (pqc-cert-matrix, one lab stack).",
             "Real servers may run initcwnd above IW10; the window is selectable for that reason.",
         ],

@@ -85,7 +85,8 @@ if "--live" in sys.argv:
     payload = build_payload(raw)
     assert payload is not None, "live capture did not build a payload"
     row = payload["row"]
-    assert row[0] is None and len(row) == 7 and len(row[6]) == 8, f"row shape wrong: {row}"
+    assert row[0] is None and len(row) == 7 and len(row[6]) == len(SCENARIOS), f"row shape wrong: {row}"
+    assert payload["scenarios"] == [f"{p}|{s}|{m}" for p, s, m in SCENARIOS]
     assert len(payload["certs"]) == row[2] == len(payload["certs_der_b64"]), (
         "evidence must carry one parsed-fact entry and one DER per certificate"
     )

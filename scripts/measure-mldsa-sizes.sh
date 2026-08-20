@@ -10,7 +10,7 @@ cd "$workdir"
 
 openssl version
 printf 'test' > msg.bin
-for alg in ML-DSA-44 ML-DSA-65 ML-DSA-87; do
+for alg in ML-DSA-44 ML-DSA-65 ML-DSA-87 SLH-DSA-SHA2-128s; do
   openssl genpkey -algorithm "$alg" -out key.pem 2>/dev/null
   openssl pkey -in key.pem -pubout -outform DER -out spki.der
   openssl pkeyutl -sign -inkey key.pem -rawin -in msg.bin -out sig.bin

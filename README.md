@@ -22,6 +22,11 @@ top 10,000 domains completed a handshake, 8,151 parseable.
   corpus adds.
 - **Leaf-only migration fits almost everywhere**: 0.3% (ML-DSA-44) and 0.9%
   (ML-DSA-65) of sites exceed IW10.
+- **Unless CT logs go hash-based.** If each embedded SCT carries an
+  SLH-DSA-128s signature (7,856 bytes, measured with OpenSSL 3.5.5), the SCTs
+  alone outweigh the certificates: even leaf-only migration projects past
+  IW10 for 99.7% of sites, and past IW20 for 51.6%. Added 2026-08-19 as a
+  third SCT scenario; the eight original scenarios are unchanged.
 - **Certificate compression recovers a median 985 bytes (28.6%) on these chains
   today, and roughly the same 985 bytes after migration**, which is 7.4% of an
   ML-DSA-44 chain and 5.5% of an ML-DSA-65 one. The saving is structural, and

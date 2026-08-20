@@ -40,6 +40,12 @@ from export_web import SCENARIOS
 from parse_chains import summarize
 from project_chains import project_domain
 
+# Shipped in every payload so the page renders flights by the SERVICE's
+# scenario order, never its own possibly-older meta.json: adding a scenario
+# axis reorders the flights array, and a page/service version skew would
+# otherwise misfile numbers silently.
+SCENARIO_KEYS = [f"{p}|{s}|{m}" for p, s, m in SCENARIOS]
+
 ALLOW_ORIGINS = os.environ.get("ALLOW_ORIGINS", "https://carrdigital.dev").split(",")
 BUDGET_PER_HOUR = int(os.environ.get("BUDGET_PER_HOUR", "20"))
 CACHE_OK_TTL = int(os.environ.get("CACHE_OK_TTL", str(24 * 3600)))
@@ -167,6 +173,7 @@ def build_payload(raw: dict) -> dict | None:
         "tls_version": rec.get("tls_version"),
         "certs": [{k: c.get(k) for k in CERT_FIELDS} for c in rec["certs"]],
         "certs_der_b64": list(raw.get("certs_der_b64", [])),
+        "scenarios": SCENARIO_KEYS,
         "row": [
             None,
             rec["total_der_bytes"],

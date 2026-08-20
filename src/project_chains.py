@@ -10,7 +10,10 @@ swaps).
 Scenario axes (all combinations emitted, never one number):
   param:     ML-DSA-44 | ML-DSA-65
   scts:      classical (SCTs keep ECDSA logs) | migrated (each SCT signature
-             becomes an ML-DSA signature)
+             becomes an ML-DSA signature) | slh-dsa-128s (each SCT signature
+             becomes SLH-DSA-128s, the conservative hash-based option argued
+             for long-lived log keys; chain and CertificateVerify stay on the
+             param axis)
   migration: full (every transmitted cert re-signed and re-keyed) |
              leaf-only (leaf gets an ML-DSA key, chain signatures stay
              classical; CertificateVerify still becomes ML-DSA)
@@ -44,13 +47,17 @@ MLDSA = {
     "ML-DSA-87": {"spki": 2614, "sig": 4627},
 }
 SCT_CLASSICAL_SIG = 71  # typical ECDSA P-256 SCT signature, assumption
+# Verified locally 2026-08-19 against OpenSSL 3.5.5 (same script as MLDSA):
+# raw SLH-DSA-SHA2-128s signature. Used only for the SCT swap; nothing else
+# in the projection goes hash-based.
+SLH_DSA_128S_SIG = 7856
 NON_CV_OVERHEAD = 1256  # Reported: pqc-cert-matrix phase3/TRANSPORT.md, see module docstring
 CV_FRAMING = 4
 WINDOWS = {"IW10": 14600, "IW20": 29200, "IW32": 46720}
 AMP_3X = 4071  # 3 x 1,357: the larger QUIC amplification limit Nawrocki et al. use
 
 PARAMS = ("ML-DSA-44", "ML-DSA-65")
-SCT_MODES = ("classical", "migrated")
+SCT_MODES = ("classical", "migrated", "slh-dsa-128s")
 MIGRATIONS = ("full", "leaf-only")
 
 
@@ -66,8 +73,9 @@ def project_domain(rec: dict[str, Any], param: str, scts: str, migration: str) -
             der = der - c["sig_len"] - c["spki_len"] + sizes["sig"] + sizes["spki"]
         elif i == 0:  # leaf-only: new key in the leaf, classical signature kept
             der = der - c["spki_len"] + sizes["spki"]
-        if i == 0 and scts == "migrated":
-            der += c.get("sct_count", 0) * (sizes["sig"] - SCT_CLASSICAL_SIG)
+        if i == 0 and scts != "classical":
+            sct_sig = SLH_DSA_128S_SIG if scts == "slh-dsa-128s" else sizes["sig"]
+            der += c.get("sct_count", 0) * (sct_sig - SCT_CLASSICAL_SIG)
         projected.append(der)
 
     chain_wire = sum(projected) + 12 + 5 * len(projected)
