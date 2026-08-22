@@ -65,6 +65,19 @@ assert over_budget("t"), "budget must trip after BUDGET_PER_HOUR hits"
 assert not over_budget("someone-else")
 app._hits.clear()
 
+# --- budget dict: stale buckets purge once the dict is large ---
+import collections
+import time as _time
+_stale = _time.monotonic() - 7200
+for i in range(10_001):
+    app._hits[f"spoof-{i}"] = collections.deque([_stale])
+over_budget("fresh")
+assert len(app._hits) <= 2, (
+    f"stale _hits buckets survived the purge: {len(app._hits)} left; "
+    "unique spoofed client headers would grow the dict forever"
+)
+app._hits.clear()
+
 # --- cache eviction: stays bounded ---
 app._cache.clear()
 _max = app.CACHE_MAX

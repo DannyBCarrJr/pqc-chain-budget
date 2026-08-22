@@ -220,6 +220,14 @@ def client_ip(request: Request) -> str:
 
 def over_budget(ip: str) -> bool:
     now = time.monotonic()
+    # Purge buckets whose newest hit aged out. Without this, a caller cycling
+    # unique client headers against an already-cached domain grows _hits
+    # forever, because the only other cleanup lives in cache_put and a cache
+    # hit never calls it. Ten thousand live buckets means ten thousand
+    # distinct clients in one hour; below that the dict is left alone.
+    if len(_hits) > 10_000:
+        for k in [k for k, v in _hits.items() if not v or now - v[-1] > 3600]:
+            del _hits[k]
     q = _hits[ip]
     while q and now - q[0] > 3600:
         q.popleft()
