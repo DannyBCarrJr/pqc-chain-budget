@@ -710,7 +710,119 @@ Framing rules for anything public that uses it:
   with Certificate Transparency", so "PQ SCTs are heavy" is theirs to say and
   ours to cite. The per-site corpus projection under a specific SLH-DSA
   parameter set is the only part claimed here.
-- **No fresh sweep was run for this scenario on 2026-08-19.** The README
-  bullet and the tool page claim only our arithmetic, which needs no sweep.
-  Before any article leads with this finding, run the standard re-sweep for
-  SLH-DSA-specific SCT projections; this entry is the reminder.
+- **The re-sweep this entry demanded ran 2026-08-22 and is recorded below.**
+  The reminder is discharged. Read the record before writing the article; the
+  mixed-algorithm construction it assumed was open turned out to be published.
+
+### Re-sweep, 2026-08-22, run before the article
+
+Three-channel adversarial sweep: academic venues, the tool landscape, and
+standards/vendor. Verdict: **the per-site corpus distribution is the only claim
+left standing, and it stands.** Both the qualitative overflow and the
+mixed-algorithm construction are published territory and must be cited.
+
+Scope, named per the 2026-08-10 methodology rule: IACR ePrint, arXiv, OpenAlex
+full text, Europe PMC (covering PubMed Central and Scientific Reports), DBLP,
+USENIX, the IETF Datatracker including all 41 PLANTS documents, 32 MDPI PQC/TLS
+papers pulled from mdpi-res.com and grepped as PDFs (their search wall 403s
+everything else), GitHub repository and code search, and ten free PQC checkers
+re-read, four of them new since 2026-08-07. Not covered, said plainly: ACM DL
+and IEEE Xplore full text (403 to fetch; metadata only via OpenAlex and DBLP),
+the IETF mail archive (Cloudflare 403), ETSI and BSI (2026-08-07 coverage only;
+the agent re-checking that channel was stopped before it ran), and the
+login-walled tools (PQCClear, DigiCert Quantum Central, the CLM consoles).
+OpenAlex full-text search for per-site post-quantum chain projection returns
+this project's own Zenodo record and nothing else. Fetched texts live in
+`.sources/priorart/`.
+
+What the sweep found, most damaging first:
+
+- **The mixed per-slot construction is published, with byte totals, at IETF.**
+  Thom Wiggers (PQShield), "Weighing Post-Quantum Authentication", IETF 124
+  PLANTS BoF, `slides-124-plants-cost-of-pq-authentication-00`, uploaded
+  2025-10-29. Slide 12 is a per-slot table with its own Certificate
+  Transparency column (3 SCTs) and rows that put the SCTs on a different
+  algorithm from the chain: 3 Falcon-512 SCTs behind an ML-DSA-44 leaf,
+  9,591 bytes total; a MAYO variant totals 6,124. The neighboring initcwnd
+  chart is annotated "No SCTs!" and a slide note reads "Cloudflare has
+  initcwnd of 30 MSS, 'cliff' may need to be moved to the left". Local text:
+  `.sources/priorart/pqshield-ietf124-plants-slides.txt`. Cite this deck for
+  the construction itself.
+- **Cloudflare published the same mixed SCT-slot arithmetic three times.**
+  Verbatim, from "Another look at PQ signatures" (2024-11-07 line in
+  `cf-another-look.txt:1044`): "If we use UOV in TLS for the SCTs and root CA,
+  whose public keys are not transmitted when setting up the connection,
+  together with ML-DSA for the others, we're looking at 7.2kB." Same
+  construction in `cf-pq-2024.txt:1122` ("only 10kB") and `cf-pq-2025.txt:1087`.
+  Every published instance picks a small-signature scheme for the SCT slot
+  because SCT public keys stay off the wire; this scenario runs the same slot
+  arithmetic with the largest-signature FIPS 205 option instead. Say that
+  contrast in the article rather than hoping nobody notices it.
+- **Homogeneous SPHINCS+ with SCTs against initcwnd is 2022 work, twice.**
+  Kampanakis and Kallitsis (CSCML 2022, `kk-sca.txt:216`): SPHINCS+-128s in
+  the "Web TLS (SCTs, no OCSP staples)" profile at 32.22 / 38.51 / 44.80 /
+  51.10 KB for 1 to 4 ICAs, against "~14.5KB, the most commonly used TCP
+  initcwnd used today (10MSS)". Their per-profile SCT delta works out to
+  exactly 1.5 x 7,856, so their arithmetic runs on the same constant; that
+  factor is OUR derivation from their table, not their stated text, and may
+  not be quoted as theirs. Sikeridis, Kampanakis, and Devetsikiotis (CoNEXT
+  2022, `ics1556.txt:219`): SPHINCS+ 128s at 36.76 / 42.73 / 48.69 KB in a
+  profile with one OCSP staple and two SCTs. Sikeridis et al. said the
+  quiet part in 2020 (NDSS, `sikeridis-ndss2020-ep2020-071.txt`): "Falcon, or
+  multivariate schemes would be preferable specifically for SCTs."
+- **Red Sift, "Why post-quantum signatures are breaking TLS handshake
+  limits", Ivan Ristic, 2026-08-03.** SCT-inclusive ML-DSA chain sizing ("5
+  signatures and 2 public keys in a typical TLS handshake"; "14,724, 18,640,
+  or 18,565 bytes") against "the modern limit is at about 14.5 KB", on a
+  certificate-monitoring vendor's blog. No SLH-DSA, no corpus. **Watch item:**
+  the post ends by promising a follow-up exploring "the evidence", and Red
+  Sift runs internet-wide certificate scans. If that post ships corpus
+  numbers, the per-site half of this scenario's novelty goes with it. Local
+  text: `redsift-2026-08-03-pq-signature-sizes.txt`.
+- **EverTrust, "Hybrid post-quantum certificates", 2026-06-03.** SLH-DSA
+  certificate sizes against CT log inclusion caps ("Google's Argon and Xenon
+  shards reject pre-certificates over 16 KB; Cloudflare's Nimbus rejects over
+  8 KB"; "SLH-DSA signatures range from 7856 bytes (128s)"). It models the
+  SCT-bearing certificate against log caps, never an SLH-DSA-signed SCT, and
+  has no congestion-window content. Same 7,856 constant. Local text:
+  `evertrust-2026-06-03-hybrid-pq-certs.txt`.
+- **MTG's PQC Size Calculator** does generic SLH-DSA size arithmetic (counts
+  times sizes plus overhead), with no chain, no domain, and no transport
+  budget. Weak narrowing, worth one clause if a reviewer raises it.
+- **The free tool landscape stays clear.** DigiCert, Wiz, QuReady, KF-Cipher,
+  Pinaka, PostQ, QCready, qcecuring, CertificateTools, and Cloudflare Radar's
+  host test all report key-exchange negotiation; none projects a byte, and
+  none mentions SCTs or congestion windows anywhere we could read.
+
+**The a-fortiori concession the article must make up front.** If SPHINCS+
+everywhere with SCTs lands at 32 to 51 KB against a 14.5 KB window in two 2022
+papers, then SLH-DSA in the SCTs alone exceeding the window is a corollary,
+not a discovery. The novelty is the shape of the distribution across 8,151
+real sites, and only that. Lead with the concession or lose the exchange.
+
+**The only defensible claim wording after this sweep:**
+
+> Kampanakis and Kallitsis (CSCML 2022, Table 1) and Sikeridis et al. (CoNEXT
+> 2022, Table 1) already publish SPHINCS+-128s authentication totals that
+> include SCT signatures and already read them against the 10-MSS initial
+> congestion window, and PQShield (IETF 124 PLANTS, slide 12) and Cloudflare
+> publish per-slot tables that put the SCTs on a different algorithm from the
+> chain. All of them are parametric by intermediate-CA count or a single
+> modeled chain. What this projection adds is the per-site distribution: on
+> 8,151 measured Tranco top-10k chains, with each site's own measured SCT
+> count swapped for a 7,856-byte SLH-DSA-128s signature, even leaf-only
+> ML-DSA migration puts 99.7% of sites past IW10 and 51.6% past IW20.
+
+Process findings from the sweep itself, recorded so they stop repeating:
+
+- **Fetch without record.** `.sources/priorart/redsift.txt` was fetched
+  2026-08-07 at 22:24, during the seeded sweep, and this file never got the
+  entry. The sweep did not miss Red Sift; it collected the evidence and
+  skipped the verdict. Same disease as the FINDINGS-table drift of 2026-08-14.
+- **Fourth fabricated citation caught.** A search summary attributed to ePrint
+  2026/666 a sentence about SCT overhead that does not exist in the PDF; the
+  17,500 figure is a y-axis tick on its Figure 12. Grepped to zero for SCT,
+  Transparency, congestion, and initcwnd. Download-and-grep held again.
+- **The 7,856 constant re-verified during the sweep**: an independent re-run
+  of `scripts/measure-mldsa-sizes.sh` on OpenSSL 3.5.5 returned
+  `SLH-DSA-SHA2-128s: spki=50 sig=7856`.
