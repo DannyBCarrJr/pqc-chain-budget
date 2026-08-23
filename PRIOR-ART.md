@@ -779,6 +779,13 @@ What the sweep found, most damaging first:
   Sift runs internet-wide certificate scans. If that post ships corpus
   numbers, the per-site half of this scenario's novelty goes with it. Local
   text: `redsift-2026-08-03-pq-signature-sizes.txt`.
+  Checked 2026-08-23: one new Red Sift post since (Ristic, "Post-quantum key
+  establishment, ten years later", 2026-08-17). Key-establishment adoption
+  only: "about 71% of human traffic" on hybrid per Cloudflare's dashboard,
+  "only about 11% of the origin servers". Zero grep hits for SCT,
+  transparency, congestion, or initcwnd in the full text. The promised
+  signatures evidence post has not shipped. Watch continues. Local text:
+  `redsift-2026-08-17-pq-key-establishment.txt`.
 - **EverTrust, "Hybrid post-quantum certificates", 2026-06-03.** SLH-DSA
   certificate sizes against CT log inclusion caps ("Google's Argon and Xenon
   shards reject pre-certificates over 16 KB; Cloudflare's Nimbus rejects over
