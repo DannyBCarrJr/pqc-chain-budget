@@ -786,6 +786,16 @@ What the sweep found, most damaging first:
   transparency, congestion, or initcwnd in the full text. The promised
   signatures evidence post has not shipped. Watch continues. Local text:
   `redsift-2026-08-17-pq-key-establishment.txt`.
+  Checked 2026-09-01: two more Ristic posts since. "Effect of post-quantum
+  algorithms on networking performance" (2026-08-24) is modeled, one observed
+  ClientHello ("I observed it to be 2,117 bytes"), the same 14KB to 18KB
+  handshake range and 14.5 KB window as the August post, no corpus, no SLH-DSA,
+  no SCT mention. "A closer look at the performance of ML-KEM" (2026-09-01) is
+  key establishment only. Neither is the promised signatures evidence post.
+  Zero grep hits for SCT, transparency, SLH-DSA, or Merkle in either full
+  text. Watch continues. Local text:
+  `redsift-2026-08-24-pq-networking-performance.txt`,
+  `redsift-2026-09-01-mlkem-performance.txt`.
 - **EverTrust, "Hybrid post-quantum certificates", 2026-06-03.** SLH-DSA
   certificate sizes against CT log inclusion caps ("Google's Argon and Xenon
   shards reject pre-certificates over 16 KB; Cloudflare's Nimbus rejects over
